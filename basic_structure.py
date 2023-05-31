@@ -38,7 +38,7 @@ class RubiksCube3x3():
                              [0, -np.sin(np.radians(deg)), np.cos(np.radians(deg)), 0],
                              [0, 0, 0, 1]])
         T2_mat = np.asarray([[np.cos(np.radians(deg)), np.sin(np.radians(deg)), 0, 0],
-                             [np.sin(np.radians(deg)), np.cos(np.radians(deg)), 0, 0],
+                             [-np.sin(np.radians(deg)), np.cos(np.radians(deg)), 0, 0],
                              [0, 0, 1, 0],
                              [0, 0, 0, 1]])
         T_mat = np.matmul(T1_mat, T2_mat)
