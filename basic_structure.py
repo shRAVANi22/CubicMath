@@ -1,5 +1,6 @@
 import numpy as np
 from cubies_26_offset import get_corner_cubies_8, get_edge_cubies_12, get_center_cubies_6
+# from cubies_26 import get_corner_cubies_8, get_edge_cubies_12, get_center_cubies_6
 import plotly.graph_objects as go
 
 
@@ -9,6 +10,8 @@ class RubiksCube3x3():
 
     @staticmethod
     def construct_ideal_cube():
+        # corners = get_corner_cubies_8()
+        # edges = get_edge_cubies_12()
         corners = get_corner_cubies_8(0.02)
         edges = get_edge_cubies_12(0.02)
         centers = get_center_cubies_6()
