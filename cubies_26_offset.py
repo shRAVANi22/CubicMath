@@ -189,26 +189,28 @@ def get_edge_cubies_12(off):
 
 
 def get_center_cubies_6():
+    # note the order of points is important because they help in defining the normal uniquely
+    # for rotation to remove ambiguity of clockwise and anticlockwise rtation with normal
     ## Up face centre
     u = Cubie("U", "center", "u", "u",
               {"points": np.array([[1, 1, 3], [2, 1, 3], [1, 2, 3], [2, 2, 3]]), "color": "white"}, None, None,
               {"points": np.array([[1, 1, 3], [2, 1, 3], [1, 2, 3], [2, 2, 3]]), "color": "white"}, None, None)
     ## Down face centre
     d = Cubie("D", "center", "d", "d",
-              {"points": np.array([[1, 1, 0], [2, 1, 0], [1, 2, 0], [2, 2, 0]]), "color": "yellow"}, None, None,
-              {"points": np.array([[1, 1, 0], [2, 1, 0], [1, 2, 0], [2, 2, 0]]), "color": "yellow"}, None, None)
+              {"points": np.array([[1, 2, 0], [2, 2, 0], [1, 1, 0], [2, 1, 0]]), "color": "yellow"}, None, None,
+              {"points": np.array([[1, 2, 0], [2, 2, 0], [1, 1, 0], [2, 1, 0]]), "color": "yellow"}, None, None)
     ## Front face centre
     f = Cubie("F", "center", "f", "f",
-              {"points": np.array([[1, 0, 1], [1, 0, 2], [2, 0, 1], [2, 0, 2]]), "color": "red"}, None, None,
-              {"points": np.array([[1, 0, 1], [1, 0, 2], [2, 0, 1], [2, 0, 2]]), "color": "red"}, None, None)
+              {"points": np.array([[1, 0, 1], [2, 0, 1], [1, 0, 2], [2, 0, 2]]), "color": "red"}, None, None,
+              {"points": np.array([[1, 0, 1], [2, 0, 1], [1, 0, 2], [2, 0, 2]]), "color": "red"}, None, None)
     ## Back face centre
     b = Cubie("B", "center", "b", "b",
-              {"points": np.array([[1, 3, 1], [1, 3, 2], [2, 3, 1], [2, 3, 2]]), "color": "orange"}, None, None,
-              {"points": np.array([[1, 3, 1], [1, 3, 2], [2, 3, 1], [2, 3, 2]]), "color": "orange"}, None, None)
+              {"points": np.array([[2, 3, 1], [1, 3, 1], [2, 3, 2], [1, 3, 2]]), "color": "orange"}, None, None,
+              {"points": np.array([[2, 3, 1], [1, 3, 1], [2, 3, 2], [1, 3, 2]]), "color": "orange"}, None, None)
     ## Left face centre
     l = Cubie("L", "center", "l", "l",
-              {"points": np.array([[0, 1, 1], [0, 2, 1], [0, 1, 2], [0, 2, 2]]), "color": "green"}, None, None,
-              {"points": np.array([[0, 1, 1], [0, 2, 1], [0, 1, 2], [0, 2, 2]]), "color": "green"}, None, None)
+              {"points": np.array([[0, 2, 1], [0, 1, 1], [0, 2, 2], [0, 1, 2]]), "color": "green"}, None, None,
+              {"points": np.array([[0, 2, 1], [0, 1, 1], [0, 2, 2], [0, 1, 2]]), "color": "green"}, None, None)
     ## Right face centre
     r = Cubie("R", "center", "r", "r",
               {"points": np.array([[3, 1, 1], [3, 2, 1], [3, 1, 2], [3, 2, 2]]), "color": "blue"}, None, None,

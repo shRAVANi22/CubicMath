@@ -15,6 +15,104 @@ class RubiksCube3x3():
         cube = corners + edges+ centers
         return cube
 
+    @staticmethod
+    def compute_face_center(face_points):
+        sum_x, sum_y, sum_z = 0, 0, 0
+        for point in face_points:
+            sum_x = sum_x + point[0]
+            sum_y = sum_y + point[1]
+            sum_z = sum_z + point[2]
+        x = sum_x/len(face_points)
+        y = sum_y/len(face_points)
+        z = sum_z/len(face_points)
+        return np.asarray([x, y, z])
+
+    def get_axis_of_rotation(self, face_points):
+        face_center = self.compute_face_center(face_points)
+        # (p2-p1)x(p3-p1)
+        p1 = face_points[0]
+        p2 = face_points[1]
+        p3 = face_points[2]
+        p21 = p2-p1
+        p31 = p3-p1
+        face_normal = np.cross(p21, p31)
+        norm = np.linalg.norm(face_normal)
+        unit_normal = face_normal/norm
+        return unit_normal, face_center
+
+    @staticmethod
+    def get_rotation_mat(unit_vec, theta):
+        ux = unit_vec[0]
+        uy = unit_vec[1]
+        uz = unit_vec[2]
+        r11 = np.cos(theta) + (ux * ux * (1 - np.cos(theta)))
+        r12 = (ux * uy * (1 - np.cos(theta))) - (uz * np.sin(theta))
+        r13 = (ux * uz * (1 - np.cos(theta))) + (uy * np.sin(theta))
+        r21 = (ux * uy * (1 - np.cos(theta))) + (uz * np.sin(theta))
+        r22 = np.cos(theta) + (uy * uy * (1 - np.cos(theta)))
+        r23 = (uy * uz * (1 - np.cos(theta))) - (ux * np.sin(theta))
+        r31 = (ux * uz * (1 - np.cos(theta))) - (uy * np.sin(theta))
+        r32 = (uy * uz * (1 - np.cos(theta))) + (ux * np.sin(theta))
+        r33 = np.cos(theta) + (uz * uz * (1 - np.cos(theta)))
+        rot_mat_4x4 = np.asarray([[r11, r12, r13, 0], [r21, r22, r23, 0], [r31, r32, r33, 0], [0, 0, 0, 1]])
+        return rot_mat_4x4
+
+    def get_transformation_matrix(self, line_normal, line_point, thetha_deg):
+        theta = np.radians(thetha_deg)
+        T1 = np.asarray([[1, 0, 0, line_point[0]], [0, 1, 0, line_point[1]],
+                         [0, 0, 1, line_point[2]], [0, 0, 0, 1]])
+        T1_inv = np.linalg.inv(T1)
+        T2 = self.get_rotation_mat(line_normal, theta)
+        trans_mat = np.linalg.multi_dot((T1, T2, T1_inv))
+        return trans_mat
+
+    def transform_n_update(self, cubies_of_interest, angle_deg):
+        # trans_mat = np.asarray([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+        for cubie in cubies_of_interest:
+            if cubie.type == 'center':
+                points_plane = cubie.current_face1_points["points"]
+                axis_normal, axis_point = self.get_axis_of_rotation(points_plane)
+                trans_mat = self.get_transformation_matrix(axis_normal, axis_point, angle_deg)
+        for cubie in cubies_of_interest:
+            if cubie.current_face1_points is not None:
+                trans_face_points1 = []
+                for point in cubie.current_face1_points["points"]:
+                    point_transpose = np.asarray([[point[0]], [point[1]], [point[2]], [1]])
+                    trnsfm_pt_transpose = np.matmul(trans_mat, point_transpose)
+                    trans_face_points1.append([trnsfm_pt_transpose[0][0], trnsfm_pt_transpose[1][0],
+                                              trnsfm_pt_transpose[2][0]])
+                cubie.current_face1_points["points"] = np.asarray(trans_face_points1)
+            if cubie.current_face2_points is not None:
+                trans_face_points2 = []
+                for point in cubie.current_face2_points["points"]:
+                    point_transpose = np.asarray([[point[0]], [point[1]], [point[2]], [1]])
+                    trnsfm_pt_transpose = np.matmul(trans_mat, point_transpose)
+                    trans_face_points2.append([trnsfm_pt_transpose[0][0], trnsfm_pt_transpose[1][0],
+                                              trnsfm_pt_transpose[2][0]])
+                cubie.current_face2_points["points"] = np.asarray(trans_face_points2)
+            if cubie.current_face3_points is not None:
+                trans_face_points3 = []
+                for point in cubie.current_face3_points["points"]:
+                    point_transpose = np.asarray([[point[0]], [point[1]], [point[2]], [1]])
+                    trnsfm_pt_transpose = np.matmul(trans_mat, point_transpose)
+                    trans_face_points3.append([trnsfm_pt_transpose[0][0], trnsfm_pt_transpose[1][0],
+                                              trnsfm_pt_transpose[2][0]])
+                cubie.current_face3_points["points"] = np.asarray(trans_face_points3)
+
+        # update the current cubicle tag
+        print('')
+
+    def rotate_layer(self, centre_piece_tag, angle_deg):
+        cubies_of_interest = []
+        for cubie in self.cube:
+            if centre_piece_tag in cubie.current_cubicle:
+                cubies_of_interest.append(cubie)
+        if len(cubies_of_interest) < 9:
+            print('something fishy while extracting cubies of interest!')
+            print('tag should be either u/l/f/d/r/b (small case)')
+        else:
+            self.transform_n_update(cubies_of_interest, angle_deg)
+
     def display_cube(self):
         fig = go.Figure()
         for cubie_x in self.cube:
@@ -99,6 +197,9 @@ class RubiksCube3x3():
 
 test_cube = RubiksCube3x3()
 ideal_cube = test_cube.cube
+test_cube.rotate_layer('d', -45)
+test_cube.display_cube()
+test_cube.rotate_layer('d', -45)
 test_cube.display_cube()
 print('')
 
