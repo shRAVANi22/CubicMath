@@ -7,6 +7,17 @@ import plotly.graph_objects as go
 class RubiksCube3x3():
     def __init__(self):
         self.cube = self.construct_ideal_cube()  ## list of 26 cubie class objects
+        #next version make it a dict of cubies
+        self.face_centers_dict = self.compute_n_set_face_centers()
+
+    def compute_n_set_face_centers(self):
+        face_centers_dict = {}
+        for cubie in self.cube:
+            if cubie.type == "center":
+                points_plane = cubie.current_face1_points["points"]
+                axis_normal, axis_point = self.get_axis_of_rotation(points_plane)
+                face_centers_dict.update({cubie.home_cubicle: {"face_normal": axis_normal, "face_center": axis_point}})
+        return face_centers_dict
 
     @staticmethod
     def construct_ideal_cube():
@@ -15,7 +26,7 @@ class RubiksCube3x3():
         corners = get_corner_cubies_8(0.02)
         edges = get_edge_cubies_12(0.02)
         centers = get_center_cubies_6()
-        cube = corners + edges+ centers
+        cube = corners + edges + centers
         return cube
 
     @staticmethod
@@ -69,52 +80,77 @@ class RubiksCube3x3():
         trans_mat = np.linalg.multi_dot((T1, T2, T1_inv))
         return trans_mat
 
-    def transform_n_update(self, cubies_of_interest, angle_deg):
-        # trans_mat = np.asarray([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
-        for cubie in cubies_of_interest:
-            if cubie.type == 'center':
-                points_plane = cubie.current_face1_points["points"]
-                axis_normal, axis_point = self.get_axis_of_rotation(points_plane)
-                trans_mat = self.get_transformation_matrix(axis_normal, axis_point, angle_deg)
-        for cubie in cubies_of_interest:
-            if cubie.current_face1_points is not None:
-                trans_face_points1 = []
-                for point in cubie.current_face1_points["points"]:
-                    point_transpose = np.asarray([[point[0]], [point[1]], [point[2]], [1]])
-                    trnsfm_pt_transpose = np.matmul(trans_mat, point_transpose)
-                    trans_face_points1.append([trnsfm_pt_transpose[0][0], trnsfm_pt_transpose[1][0],
-                                              trnsfm_pt_transpose[2][0]])
-                cubie.current_face1_points["points"] = np.asarray(trans_face_points1)
-            if cubie.current_face2_points is not None:
-                trans_face_points2 = []
-                for point in cubie.current_face2_points["points"]:
-                    point_transpose = np.asarray([[point[0]], [point[1]], [point[2]], [1]])
-                    trnsfm_pt_transpose = np.matmul(trans_mat, point_transpose)
-                    trans_face_points2.append([trnsfm_pt_transpose[0][0], trnsfm_pt_transpose[1][0],
-                                              trnsfm_pt_transpose[2][0]])
-                cubie.current_face2_points["points"] = np.asarray(trans_face_points2)
-            if cubie.current_face3_points is not None:
-                trans_face_points3 = []
-                for point in cubie.current_face3_points["points"]:
-                    point_transpose = np.asarray([[point[0]], [point[1]], [point[2]], [1]])
-                    trnsfm_pt_transpose = np.matmul(trans_mat, point_transpose)
-                    trans_face_points3.append([trnsfm_pt_transpose[0][0], trnsfm_pt_transpose[1][0],
-                                              trnsfm_pt_transpose[2][0]])
-                cubie.current_face3_points["points"] = np.asarray(trans_face_points3)
+    @staticmethod
+    def transform_face(face_points, trans_matrix):
+        trans_face_points = []
+        for point in face_points:
+            point_transpose = np.asarray([[point[0]], [point[1]], [point[2]], [1]])
+            trnsfm_pt_transpose = np.matmul(trans_matrix, point_transpose)
+            trans_face_points.append([trnsfm_pt_transpose[0][0], trnsfm_pt_transpose[1][0], trnsfm_pt_transpose[2][0]])
+        return np.asarray(trans_face_points)
 
-        # update the current cubicle tag
+    def get_nearest_center_piece(self, face_center):
+        min_dist = 100
+        min_tag = ''
+        for key, item in self.face_centers_dict.items():
+            # print(key, item["face_center"])
+            distance_square = ((item["face_center"][0] - face_center[0])**2) + \
+                              ((item["face_center"][1] - face_center[1])**2) + \
+                              ((item["face_center"][2] - face_center[2])**2)
+            dist = np.sqrt(distance_square)
+            if dist < min_dist:
+                min_dist = dist
+                min_tag = key
+        return min_tag
+
+    def get_current_location(self, cubie):
+        loc = ""
+        if cubie.current_face1_points is not None:
+            cubie_center1 = self.compute_face_center(cubie.current_face1_points["points"])
+            tag1 = self.get_nearest_center_piece(cubie_center1)
+            loc = loc + tag1
+        if cubie.current_face2_points is not None:
+            cubie_center2 = self.compute_face_center(cubie.current_face2_points["points"])
+            tag2 = self.get_nearest_center_piece(cubie_center2)
+            loc = loc + tag2
+        if cubie.current_face3_points is not None:
+            cubie_center3 = self.compute_face_center(cubie.current_face3_points["points"])
+            tag3 = self.get_nearest_center_piece(cubie_center3)
+            loc = loc + tag3
         print('')
+        return loc
+
+    def transform_n_update(self, cubies_of_interest, angle_deg, center_tag):
+        if (angle_deg % 90) == 0:
+            axis_normal = self.face_centers_dict[center_tag]["face_normal"]
+            axis_point = self.face_centers_dict[center_tag]["face_center"]
+            trans_mat = self.get_transformation_matrix(axis_normal, axis_point, angle_deg)
+            for cubie in cubies_of_interest:
+                if cubie.current_face1_points is not None:
+                    cubie.current_face1_points["points"] = self.transform_face(cubie.current_face1_points["points"], trans_mat)
+                if cubie.current_face2_points is not None:
+                    cubie.current_face2_points["points"] = self.transform_face(cubie.current_face2_points["points"], trans_mat)
+                if cubie.current_face3_points is not None:
+                    cubie.current_face3_points["points"] = self.transform_face(cubie.current_face3_points["points"], trans_mat)
+
+            # update the current cubicle tag
+
+            for cubie in cubies_of_interest:
+                new_loc = self.get_current_location(cubie)
+                cubie.current_cubicle = new_loc
+        else:
+            print('invalid rotation angle, should be multiples of 90 deg')
 
     def rotate_layer(self, centre_piece_tag, angle_deg):
         cubies_of_interest = []
         for cubie in self.cube:
-            if centre_piece_tag in cubie.current_cubicle:
+            if centre_piece_tag in cubie.current_cubicle and cubie.type != "center":
                 cubies_of_interest.append(cubie)
-        if len(cubies_of_interest) < 9:
+        if len(cubies_of_interest) < 8:
             print('something fishy while extracting cubies of interest!')
             print('tag should be either u/l/f/d/r/b (small case)')
         else:
-            self.transform_n_update(cubies_of_interest, angle_deg)
+            self.transform_n_update(cubies_of_interest, angle_deg, centre_piece_tag)
 
     def display_cube(self):
         fig = go.Figure()
@@ -200,9 +236,9 @@ class RubiksCube3x3():
 
 test_cube = RubiksCube3x3()
 ideal_cube = test_cube.cube
-test_cube.rotate_layer('d', -45)
-test_cube.display_cube()
-test_cube.rotate_layer('d', -45)
+test_cube.rotate_layer('d', -90)
+# test_cube.display_cube()
+test_cube.rotate_layer('l', -90)
 test_cube.display_cube()
 print('')
 
