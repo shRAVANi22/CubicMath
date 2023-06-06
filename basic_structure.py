@@ -4,7 +4,9 @@ from cubies_26_offset import get_corner_cubies_8, get_edge_cubies_12, get_center
 import plotly.graph_objects as go
 
 
+
 class RubiksCube3x3():
+
     def __init__(self):
         self.cube = self.construct_ideal_cube()  ## list of 26 cubie class objects
         #next version make it a dict of cubies
@@ -164,7 +166,8 @@ class RubiksCube3x3():
             scaleanchor="x",
             scaleratio=1,
         )
-        fig.show()
+        # fig.show()
+        return fig
 
     @staticmethod
     def bias_plotly_transformation(points):
@@ -234,12 +237,6 @@ class RubiksCube3x3():
         return traces, points_traces
 
 
-test_cube = RubiksCube3x3()
-ideal_cube = test_cube.cube
-test_cube.rotate_layer('d', -90)
-# test_cube.display_cube()
-test_cube.rotate_layer('l', -90)
-test_cube.display_cube()
-print('')
+
 
 
