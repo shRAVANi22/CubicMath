@@ -136,4 +136,4 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
 
 
 if __name__ == '__main__':
-    app.run_server(host='127.0.0.1', debug=True, port='8088')
+    app.run_server(host='127.0.0.1', debug=True, port='8088', use_reloader=True)

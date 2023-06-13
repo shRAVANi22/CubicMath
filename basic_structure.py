@@ -155,7 +155,9 @@ class RubiksCube3x3():
             self.transform_n_update(cubies_of_interest, angle_deg, centre_piece_tag)
 
     def display_cube(self):
-        fig = go.Figure()
+        fig = go.Figure(layout={"height": 640, "margin": dict(l=10, r=10, b=10, t=10, pad=4),
+                                        "paper_bgcolor": "LightslateGray", "width": 1280})
+
         for cubie_x in self.cube:
             mesh_trace_list, points_trace_list = self.get_cubie_trace(cubie_x)
             # for trace_x in points_trace_list:
@@ -166,6 +168,10 @@ class RubiksCube3x3():
             scaleanchor="x",
             scaleratio=1,
         )
+        camera = dict(
+            eye=dict(x=0.5, y=0.5, z=1.5)
+        )
+        fig.update_layout(scene_camera=camera, title='cube 3x3')
         # fig.show()
         return fig
 
