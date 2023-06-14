@@ -4,7 +4,6 @@ from cubies_26_offset import get_corner_cubies_8, get_edge_cubies_12, get_center
 import plotly.graph_objects as go
 
 
-
 class RubiksCube3x3():
 
     def __init__(self):
@@ -155,8 +154,8 @@ class RubiksCube3x3():
             self.transform_n_update(cubies_of_interest, angle_deg, centre_piece_tag)
 
     def display_cube(self):
-        fig = go.Figure(layout={"height": 640, "margin": dict(l=10, r=10, b=10, t=10, pad=4),
-                                        "paper_bgcolor": "LightslateGray", "width": 1280})
+        fig = go.Figure(layout={"height": 480, "margin": dict(l=2, r=2, b=2, t=2, pad=0),
+                                        "paper_bgcolor": "LightslateGray", "width": 640})
 
         for cubie_x in self.cube:
             mesh_trace_list, points_trace_list = self.get_cubie_trace(cubie_x)
@@ -169,7 +168,7 @@ class RubiksCube3x3():
             scaleratio=1,
         )
         camera = dict(
-            eye=dict(x=0.5, y=0.5, z=1.5)
+            eye=dict(x=-2, y=-2, z=2)
         )
         fig.update_layout(scene_camera=camera, title='cube 3x3')
         # fig.show()

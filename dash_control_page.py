@@ -37,6 +37,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
         # Rubie1 = RubiksCube3x3()
         # Rubie = Rubie1
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -45,6 +46,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
         print(button_id)
         Rubie.rotate_layer('u', -90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -52,6 +54,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
     elif button_id == 'Uw_inv':
         Rubie.rotate_layer('u', 90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -60,6 +63,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
         print(button_id)
         Rubie.rotate_layer('f', -90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -67,6 +71,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
     elif button_id == 'Fr_inv':
         Rubie.rotate_layer('f', 90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -75,6 +80,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
         print(button_id)
         Rubie.rotate_layer('r', -90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -82,6 +88,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
     elif button_id == 'Rb_inv':
         Rubie.rotate_layer('r', 90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -90,6 +97,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
         print(button_id)
         Rubie.rotate_layer('d', -90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -97,6 +105,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
     elif button_id == 'Dy_inv':
         Rubie.rotate_layer('d', 90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -105,6 +114,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
         print(button_id)
         Rubie.rotate_layer('b', -90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -112,6 +122,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
     elif button_id == 'Bo_inv':
         Rubie.rotate_layer('b', 90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -120,6 +131,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
         print(button_id)
         Rubie.rotate_layer('l', -90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
@@ -127,6 +139,7 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
     elif button_id == 'Lg_inv':
         Rubie.rotate_layer('l', 90)
         fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
         update_out = html.Div([
             html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
             style={'display': 'flex'})
