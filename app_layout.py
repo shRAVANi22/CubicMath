@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 layout1 = html.Div(children=[
     html.Div([
         "Select Cube",
-        dcc.Dropdown(['Ideal Cube', 'Scrambled_Cube'], 'Ideal Cube', id='cube_dropdown')]),
+        dcc.Dropdown(['Ideal Cube', 'Scrambled Cube'], 'Ideal Cube', id='cube_dropdown')]),
     html.Button("Reset", id="reset", n_clicks=0, style={'background-color': 'black', 'color': 'white'}),
     html.Div([
         dbc.Button("U_CW", id="Uw", n_clicks=0,

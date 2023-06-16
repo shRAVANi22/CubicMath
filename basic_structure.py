@@ -1,6 +1,6 @@
 import numpy as np
 from cubies_26_offset import get_corner_cubies_8, get_edge_cubies_12, get_center_cubies_6
-# from cubies_26 import get_corner_cubies_8, get_edge_cubies_12, get_center_cubies_6
+import random
 import plotly.graph_objects as go
 
 
@@ -10,6 +10,53 @@ class RubiksCube3x3():
         self.cube = self.construct_ideal_cube()  ## list of 26 cubie class objects
         #next version make it a dict of cubies
         self.face_centers_dict = self.compute_n_set_face_centers()
+        self.initial_state = 0 # for ideal cube
+        # self.initial_state = -1 #for scrambled/unrestored cube
+
+    def scramble_ideal_cube(self):
+        operations_count_list = list(np.linspace(31, 50, 20, endpoint=True))
+        operations_list = list(np.linspace(1, 12, 12, endpoint=True))
+        op_count = int(random.choice(operations_count_list))
+        operations_sequence = ''
+        for i in range(0, op_count):
+            operation_number = int(random.choice(operations_list))
+            if operation_number == 1:
+                self.rotate_layer('u', -90)
+                operations_sequence = operations_sequence + 'u '
+            elif operation_number == 2:
+                self.rotate_layer('d', -90)
+                operations_sequence = operations_sequence + 'd '
+            elif operation_number == 3:
+                self.rotate_layer('f', -90)
+                operations_sequence = operations_sequence + 'f '
+            elif operation_number == 4:
+                self.rotate_layer('b', -90)
+                operations_sequence = operations_sequence + 'b '
+            elif operation_number == 5:
+                self.rotate_layer('l', -90)
+                operations_sequence = operations_sequence + 'l '
+            elif operation_number == 6:
+                self.rotate_layer('r', -90)
+                operations_sequence = operations_sequence + 'r '
+            elif operation_number == 7:
+                self.rotate_layer('u', 90)
+                operations_sequence = operations_sequence + 'u1 '
+            elif operation_number == 8:
+                self.rotate_layer('d', 90)
+                operations_sequence = operations_sequence + 'd1 '
+            elif operation_number == 9:
+                self.rotate_layer('f', 90)
+                operations_sequence = operations_sequence + 'f1 '
+            elif operation_number == 10:
+                self.rotate_layer('b', 90)
+                operations_sequence = operations_sequence + 'b1 '
+            elif operation_number == 11:
+                self.rotate_layer('l', 90)
+                operations_sequence = operations_sequence + 'l1 '
+            elif operation_number == 12:
+                self.rotate_layer('r', 90)
+                operations_sequence = operations_sequence + 'r1 '
+        return operations_sequence
 
     def compute_n_set_face_centers(self):
         face_centers_dict = {}
@@ -118,7 +165,6 @@ class RubiksCube3x3():
             cubie_center3 = self.compute_face_center(cubie.current_face3_points["points"])
             tag3 = self.get_nearest_center_piece(cubie_center3)
             loc = loc + tag3
-        print('')
         return loc
 
     def transform_n_update(self, cubies_of_interest, angle_deg, center_tag):

@@ -32,10 +32,18 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
     button_id = ctx.triggered_id if not None else 'No clicks yet'
     print(button_id)
 
-    # translation along X axis
-    if button_id == 'reset':
+    if button_id == 'cube_dropdown':
+        if cube_dropdown == 'Ideal Cube':
+            Rubie.initial_state = 0
+        else:
+            Rubie.initial_state = -1
+            Rubie.scramble_ideal_cube()
+    elif button_id == 'reset':
         # Rubie1 = RubiksCube3x3()
-        # Rubie = Rubie1
+        if Rubie.initial_state == 0:
+            Rubie.cube = Rubie.construct_ideal_cube()
+        else:
+            Rubie.scramble_ideal_cube()
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
