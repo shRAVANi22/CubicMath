@@ -35,9 +35,16 @@ def rubie_transitions(cube_dropdown, reset, Uw, Uw_inv, Fr, Fr_inv, Rb, Rb_inv, 
     if button_id == 'cube_dropdown':
         if cube_dropdown == 'Ideal Cube':
             Rubie.initial_state = 0
+            Rubie.cube = Rubie.construct_ideal_cube()
         else:
             Rubie.initial_state = -1
             Rubie.scramble_ideal_cube()
+        fig = Rubie.display_cube()
+        fig.layout['uirevision'] = True
+        update_out = html.Div([
+            html.Div([dcc.Graph(id='graph_3d', figure=fig)], style={'width': '49%', 'display': 'inline-block'})],
+            style={'display': 'flex'})
+        return update_out
     elif button_id == 'reset':
         # Rubie1 = RubiksCube3x3()
         if Rubie.initial_state == 0:
