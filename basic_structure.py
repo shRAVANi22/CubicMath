@@ -11,6 +11,13 @@ class RubiksCube3x3():
         #next version make it a dict of cubies
         self.face_centers_dict = self.compute_n_set_face_centers()
         self.initial_state = 0 # for ideal cube
+        self.track_moves = False
+        self.cubies_moves = {'UBL': [], 'UFL': [], 'UFR': [], 'URB': [],
+                             'DBL': [], 'DFL': [], 'DFR': [], 'DRB': [],
+                             'UL': [], 'UF': [], 'UR': [], 'UB': [],
+                             'BL': [], 'LF': [], 'FR': [], 'RB': [],
+                             'DL': [], 'DF': [], 'DR': [], 'DB': [],
+                             'U': [], 'D': [], 'F': [], 'B': [], 'L': [], 'R': []}
         # self.initial_state = -1 #for scrambled/unrestored cube
 
     def scramble_ideal_cube(self):
@@ -200,8 +207,8 @@ class RubiksCube3x3():
             self.transform_n_update(cubies_of_interest, angle_deg, centre_piece_tag)
 
     def display_cube(self):
-        fig = go.Figure(layout={"height": 480, "margin": dict(l=2, r=2, b=2, t=2, pad=0),
-                                        "paper_bgcolor": "LightslateGray", "width": 640})
+        fig = go.Figure(layout={"height": 960, "margin": dict(l=2, r=2, b=2, t=2, pad=0),
+                                        "paper_bgcolor": "LightslateGray", "width": 1280})
 
         for cubie_x in self.cube:
             mesh_trace_list, points_trace_list = self.get_cubie_trace(cubie_x)
@@ -219,6 +226,12 @@ class RubiksCube3x3():
         fig.update_layout(scene_camera=camera, title='cube 3x3')
         # fig.show()
         return fig
+
+    def get_tag_current_cubicle_dict(self):
+        dict_cubes = {}
+        for cubie in self.cube:
+            dict_cubes.update({cubie.tag: cubie.current_cubicle})
+        return dict_cubes
 
     @staticmethod
     def bias_plotly_transformation(points):
@@ -286,6 +299,12 @@ class RubiksCube3x3():
                                       marker=dict(size=size1, color=color1), name=tag)
             points_traces.append(pts_trace3)
         return traces, points_traces
+
+    def appending_move(self):
+        new_list = self.get_tag_current_cubicle_dict()
+        for key, value in new_list.items():
+            self.cubies_moves[key].append(value)
+        print('')
 
 
 

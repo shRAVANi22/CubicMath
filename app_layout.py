@@ -4,8 +4,17 @@ import dash_bootstrap_components as dbc
 layout1 = html.Div(children=[
     html.Div([
         "Select Cube",
-        dcc.Dropdown(['Ideal Cube', 'Scrambled Cube'], 'Ideal Cube', id='cube_dropdown')]),
+        dcc.Dropdown(['Ideal Cube', 'Scrambled Cube'], 'Ideal Cube', id='cube_dropdown'),
+        "Track moves",
+        dcc.Dropdown(['Yes', 'No'], 'No', id='keep_track')
+    ],
+        style={
+                "width": "10%",
+                "marginLeft": "5em",
+            },),
+    html.Br(),
     html.Button("Reset", id="reset", n_clicks=0, style={'background-color': 'black', 'color': 'white'}),
+    html.Br(),
     html.Div([
         dbc.Button("U_CW", id="Uw", n_clicks=0,
                    style={'background-color': 'white', 'color': 'black', 'height': '50px', 'width': '100px',
@@ -46,6 +55,14 @@ layout1 = html.Div(children=[
                    style={'background-color': 'green', 'color': 'black', 'height': '50px', 'width': '100px',
                           'margin-top': '1px', 'margin-left': '50px'})
     ]),
-    html.Div(id='container')
+
+    # html.Div(["\n\n\n\n"], style={"width": "100%", "marginLeft": "5em"}),
+    html.Br(),
+    html.Div(id='container'),
+    html.Br(),
+    html.Div([
+        html.Button("Download CSV", id="btn_csv"),
+        # dcc.Download(id="download-dataframe-csv"),
+    ])
 
 ])
