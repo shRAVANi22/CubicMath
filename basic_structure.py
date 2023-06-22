@@ -12,6 +12,7 @@ class RubiksCube3x3():
         self.face_centers_dict = self.compute_n_set_face_centers()
         self.initial_state = 0 # for ideal cube
         self.track_moves = False
+        self.move_sequences = []
         self.cubies_moves = {'UBL': [], 'UFL': [], 'UFR': [], 'URB': [],
                              'DBL': [], 'DFL': [], 'DFR': [], 'DRB': [],
                              'UL': [], 'UF': [], 'UR': [], 'UB': [],

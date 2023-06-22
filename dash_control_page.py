@@ -84,6 +84,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('u', -90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Uw')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -94,6 +95,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('u', 90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Uw_inv')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -105,6 +107,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('f', -90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Fr')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -115,6 +118,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('f', 90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Fr_inv')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -126,6 +130,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('r', -90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Rb')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -136,6 +141,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('r', 90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Rb_inv')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -147,6 +153,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('d', -90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Dy')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -157,6 +164,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('d', 90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Dy_inv')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -168,6 +176,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('b', -90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Bo')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -178,6 +187,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('b', 90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Bo_inv')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -189,6 +199,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('l', -90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Lg')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -199,6 +210,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
         Rubie.rotate_layer('l', 90)
         if Rubie.track_moves is True:
             Rubie.appending_move()
+            Rubie.move_sequences.append('Lg_inv')
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
@@ -208,6 +220,7 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
     elif button_id == 'btn_csv':
         if Rubie.track_moves is True:
             with open('cubies_moves.csv', 'w') as f:
+                f.write("%s,%s\n" % ('moves', Rubie.move_sequences))
                 for key in Rubie.cubies_moves.keys():
                     f.write("%s,%s\n" % (key, Rubie.cubies_moves[key]))
             f.close()
