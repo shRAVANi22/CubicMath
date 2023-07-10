@@ -6,7 +6,7 @@ from dash import Input, Output, ctx
 from app_layout import layout1
 from basic_structure import RubiksCube3x3
 from dash import html, dcc
-import pandas as pd
+# import pandas as pd
 
 Rubie = RubiksCube3x3()
 app = dash.Dash(__name__)
@@ -56,6 +56,13 @@ def rubie_transitions(cube_dropdown, keep_track, reset, Uw, Uw_inv, Fr, Fr_inv, 
             Rubie.track_moves = True
         else:
             Rubie.track_moves = False
+            Rubie.move_sequences = []
+            Rubie.cubies_moves = {'UBL': [], 'UFL': [], 'UFR': [], 'URB': [],
+                                 'DBL': [], 'DFL': [], 'DFR': [], 'DRB': [],
+                                 'UL': [], 'UF': [], 'UR': [], 'UB': [],
+                                 'BL': [], 'LF': [], 'FR': [], 'RB': [],
+                                 'DL': [], 'DF': [], 'DR': [], 'DB': [],
+                                 'U': [], 'D': [], 'F': [], 'B': [], 'L': [], 'R': []}
         fig = Rubie.display_cube()
         fig.layout['uirevision'] = True
         update_out = html.Div([
